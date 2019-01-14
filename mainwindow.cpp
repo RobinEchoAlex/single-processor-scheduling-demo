@@ -8,12 +8,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setWindowTitle(tr("Uniprocessor Dispatcher"));
+
     Dispatcher dispathcer;
     policy.addButton(ui->RRChosen,0);
     policy.addButton(ui->PRChosen,1);
     policy.addButton(ui->SPNChosen,2);
     policy.addButton(ui->SRTChosen,3);
     ui->RRChosen->setChecked(true);
+
 }
 
 MainWindow::~MainWindow()
@@ -48,7 +51,7 @@ void MainWindow::on_StartButton_clicked()
     this->print(message,colour);
     while(dispatcher.inquireStop()==false && dispatcher.inquirePause()==false){
         if(policy.checkedId()==0){
-            dispatcher.roundRobin(dispatcher.pcbArray,nullptr);
+            dispatcher.roundRobin(ui,nullptr);
             dispatcher.createNewPcb();
         }
     }
@@ -96,3 +99,16 @@ void MainWindow::stringToHtml(QString &str,QColor colour)
     QString strC(array.toHex());
     str = QString("<spanT style=\" color:#%1;\">%2</span>").arg(strC).arg(str);
 }
+/*
+void MainWindow::runDown(Pcb* pcb,int runningTime){
+    double percentage;
+    ui->CurrentProcessNo->setText(QString::number(pcb->getName()));
+    ui->CurrentProcessPriority->setText(QString::number(pcb->getPriority()));
+    for(int i=0;i<runningTime;i++){
+        QEventLoop eventloop;
+        QTimer::singleShot(1000, &eventloop, SLOT(quit()));
+        eventloop.exec();
+        percentage = (runningTime-i)/ pcb->getTime();
+    }
+}
+*/

@@ -3,7 +3,9 @@
 
 #include <QMainWindow>
 #include <QButtonGroup>
-#include "dispatcher.h"
+#include <QCoreApplication>
+#include <QTimer>
+#include "Dispatcher.h"
 
 namespace Ui {
 class MainWindow;
@@ -19,8 +21,10 @@ public:
     void print(QString & name,QString &colour);
     void stringToHtmlFilter(QString &str);
     void stringToHtml(QString &str,QColor colour);
+    //void runDown(Pcb* pcb,int runningTime);
     QButtonGroup policy;
     Dispatcher dispatcher;
+    Ui::MainWindow *ui;
 
 private slots:
     void on_RRChosen_clicked();
@@ -34,7 +38,7 @@ private slots:
     void on_StartButton_clicked();
 
 private:
-    Ui::MainWindow *ui;
+
 };
 
 #endif // MAINWINDOW_H

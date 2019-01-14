@@ -7,6 +7,7 @@
 #include <QVector>
 #include <QDebug>
 
+class MainWindow;
 
 class Dispatcher: public QObject
 {
@@ -20,16 +21,17 @@ public :
     void setPause(bool pause);
     void setStop(bool stop);
     int getMaxPcb();
-    int getpcbNo();
+    int getPcbNumber();
+    int getPcbNo();
     bool inquirePause();
     bool inquireStop();
     bool inquireFree();
     QVector<Pcb*> pcbArray;
 
-    void roundRobin(QVector<Pcb*> pcbArray,Pcb *newPcb);
-    void priority(QVector<Pcb*> pcbArray,Pcb *newPcb);
-    void ShortestProcessNext(QVector<Pcb*> pcbArray,Pcb *newPcb);
-    void ShortestRemainingTime(QVector<Pcb*> pcbArray,Pcb *newPcb);
+    void roundRobin(Ui::MainWindow *ui,Pcb *newPcb);
+    void priority(Pcb *newPcb);
+    void ShortestProcessNext(Pcb *newPcb);
+    void ShortestRemainingTime(Pcb *newPcb);
     void createNewPcb();
 
 public slots:
@@ -40,6 +42,7 @@ signals:
 private:
     int maxPcb;
     bool free;
+    int pcbNumber;
     int pcbNo;
     bool pause;
     bool stop;

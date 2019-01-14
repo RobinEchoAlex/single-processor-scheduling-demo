@@ -1,7 +1,13 @@
 #include "Dispatcher.h"
 
 Dispatcher::Dispatcher(){
-    QVector<Pcb> pcbArray(100);
+    QVector<Pcb> pcbArray;
+    setMaxPcb(6);
+    this->free=true;
+    this->stop=false;
+    this->pause=false;
+    this->pcbNo=0;
+    this->pcbNumber=0;
 }
 
 void Dispatcher::setMaxPcb(int maxPcb){
@@ -12,9 +18,8 @@ int Dispatcher::getMaxPcb(){
     return this->maxPcb;
 }
 
-int Dispatcher::getpcbNo(){
-    pcbNo++;
-    return pcbNo-1;
+int Dispatcher::getPcbNumber(){
+    return pcbNumber;
 }
 
 bool Dispatcher::inquirePause(){
@@ -29,19 +34,24 @@ bool Dispatcher::inquireFree(){
     return this->free;
 }
 
+int Dispatcher::getPcbNo(){
+    return pcbNo;
+}
+
 void Dispatcher::sendToConsole(QString sendText,QString colour)//send the word to the text display window
 {
     //qDebug()<<status<<endl;
     emit newText(sendText,colour);
 }
 
-void Dispatcher::roundRobin(QVector<Pcb*> pcbArray, Pcb *newPcb){
+void Dispatcher::roundRobin(Ui::MainWindow *ui, Pcb *newPcb){
     bool finished;
-    pcbArray.append(newPcb);
+    if(newPcb!=nullptr) pcbArray.append(newPcb);
+    qDebug()<<pcbArray.isEmpty()<<" "<<pcbArray.length()<<endl;
     if(pcbArray.isEmpty()){
         return;
     }
-    finished=pcbArray.first()->run(1);
+    finished=pcbArray.first()->run(ui,2);
     if(finished==1) {
         pcbArray.append(pcbArray.takeFirst());
     }
@@ -59,6 +69,21 @@ void Dispatcher::createNewPcb(){
         return;
     }
     else{
-
+        int possibility[]={100,60,30,10,8,5,0};
+        QTime t;
+        t= QTime::currentTime();
+        qsrand(t.msec()+t.second()*1000);
+        int probability=qrand()%100;
+        qDebug()<<"Probability is "<<probability<<endl;
+        qDebug()<<"PCB number is<<"<<this->getPcbNumber()<<endl;
+        if(possibility[this->getPcbNumber()]<probability){
+            return;
+        }
     }
+    Pcb *p= new Pcb(this);
+    pcbArray.append(p);
+    this->pcbNumber++;
+    this->pcbNo++;
+
+    return;
 }

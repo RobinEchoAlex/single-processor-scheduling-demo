@@ -26,31 +26,64 @@
     <property name="title">
      <string>Current Process</string>
     </property>
-    <widget class="QLabel" name="label">
+    <widget class="QProgressBar" name="progressBar">
      <property name="geometry">
       <rect>
-       <x>190</x>
-       <y>30</y>
-       <width>81</width>
-       <height>21</height>
+       <x>50</x>
+       <y>130</y>
+       <width>341</width>
+       <height>61</height>
       </rect>
      </property>
-     <property name="text">
-      <string>NO.:</string>
+     <property name="maximum">
+      <number>100</number>
+     </property>
+     <property name="value">
+      <number>100</number>
+     </property>
+     <property name="format">
+      <string/>
      </property>
     </widget>
-    <widget class="QLabel" name="label_2">
+    <widget class="QWidget" name="gridLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>190</x>
-       <y>60</y>
-       <width>81</width>
-       <height>21</height>
+       <x>50</x>
+       <y>40</y>
+       <width>261</width>
+       <height>71</height>
       </rect>
      </property>
-     <property name="text">
-      <string>Priority:</string>
-     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="1">
+       <widget class="QLabel" name="CurrentProcessNoValue">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="CurrentProcessNo">
+        <property name="text">
+         <string>NO.:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="CurrentProcessPriority">
+        <property name="text">
+         <string>Priority:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="CurrentProcessPriorityValue">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
