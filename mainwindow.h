@@ -18,7 +18,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void print(QString & name,QString &colour);
+    void print(QString & name,QString &colour,QString &target);
     void stringToHtmlFilter(QString &str);
     void stringToHtml(QString &str,QColor colour);
     //void runDown(Pcb* pcb,int runningTime);
@@ -36,6 +36,8 @@ private slots:
     void on_SRTChosen_clicked();
 
     void on_StartButton_clicked();
+
+    void on_PauseButton_clicked();
 
 private:
 

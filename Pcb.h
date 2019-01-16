@@ -16,25 +16,30 @@ class Pcb: public QObject
     Q_OBJECT
 public :
 
-    void sendToConsole(QString sendText,QString colour);
+    void sendToConsole(QString sendText,QString colour,QString target);
     Pcb();
-    Pcb(Dispatcher *dispatcher);
-    int run(Ui::MainWindow *ui,int runningTime);
+    Pcb(Dispatcher *dispatcher,MainWindow *mainWindow);
+    int run(Ui::MainWindow *ui,Dispatcher *dispatcher,int runningTime,int method);
+    void runDown(Ui::MainWindow *ui,Dispatcher *dispatcher,int runningTime);
     int getName();
     int getPriority();
     int getTime();
+    int getOriginTime();
+    int getEnterTime();
+    int calculateAverageNormalisedTurnaroundTime(Ui::MainWindow *ui,Dispatcher *dispatcher);//Refactor:should lies in dispatcher class
     void decreasePriority();
 public slots:
 
 signals:
-    void newText(QString &name,QString &colour);
-    void runDown(Pcb* pcb,int runningTime);
+    void newText(QString &name,QString &colour,QString &target);
 
 private:
     int name;
     int status;//0:wait 1:executive
     int priority;
     int time;
+    int originTime;
+    int enterTime;
 
 };
 

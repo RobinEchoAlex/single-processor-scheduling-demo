@@ -6,6 +6,7 @@
 #include <QThread>
 #include <QVector>
 #include <QDebug>
+#include <QTimer>
 
 class MainWindow;
 
@@ -14,14 +15,18 @@ class Dispatcher: public QObject
     Q_OBJECT
     QThread workerThread;
 public :
-    void sendToConsole(QString sendText,QString colour);
+    void sendToConsole(QString sendText,QString colour,QString target);
     Dispatcher();
 
     void setMaxPcb(int maxpcb);
     void setPause(bool pause);
     void setStop(bool stop);
+    void setAverageNTT(double NTT);
+    void clockTick(Ui::MainWindow *ui);
     int getMaxPcb();
+    double getAverageNTT();
     int getPcbNumber();
+    double getClock();
     int getPcbNo();
     bool inquirePause();
     bool inquireStop();
@@ -29,15 +34,16 @@ public :
     QVector<Pcb*> pcbArray;
 
     void roundRobin(Ui::MainWindow *ui,Pcb *newPcb);
-    void priority(Pcb *newPcb);
-    void ShortestProcessNext(Pcb *newPcb);
-    void ShortestRemainingTime(Pcb *newPcb);
-    void createNewPcb();
+    void priority(Ui::MainWindow *ui,Pcb *newPcb);
+    void ShortestProcessNext(Ui::MainWindow *ui,Pcb *newPcb);
+    void ShortestRemainingTime(Ui::MainWindow *ui,Pcb *newPcb);
+    void createNewPcb(MainWindow *mainWindow);
+    void upDateLineup(Ui::MainWindow *ui);
 
 public slots:
 
 signals:
-    void newText(QString &name,QString &colour);
+    void newText(QString &name,QString &colour,QString &target);
 
 private:
     int maxPcb;
@@ -46,7 +52,8 @@ private:
     int pcbNo;
     bool pause;
     bool stop;
-
+    double clock;
+    double AverageNTT;
 };
 
 #endif // DISPATCHER_H
