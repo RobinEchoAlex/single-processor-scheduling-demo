@@ -84,7 +84,7 @@ void MainWindow::on_StartButton_clicked()
     print(message,colour,target);
     while(dispatcher->inquireStop()==false && dispatcher->inquirePause()==false){
         if(policy.checkedId()==0){
-            dispatcher->roundRobin(ui,nullptr);
+            dispatcher->roundRobin(this,nullptr);
             dispatcher->upDateLineup(this);
             dispatcher->createNewPcb(this);
             dispatcher->upDateLineup(this);
@@ -96,13 +96,13 @@ void MainWindow::on_StartButton_clicked()
             dispatcher->upDateLineup(this);
         }
         if(policy.checkedId()==2){
-            dispatcher->ShortestProcessNext(ui,nullptr);
+            dispatcher->ShortestProcessNext(this,nullptr);
             dispatcher->upDateLineup(this);
             dispatcher->createNewPcb(this);
             dispatcher->upDateLineup(this);
         }
         if(policy.checkedId()==3){
-            dispatcher->ShortestRemainingTime(ui,nullptr);
+            dispatcher->ShortestRemainingTime(this,nullptr);
             dispatcher->upDateLineup(this);
         }
     }

@@ -35,13 +35,13 @@ public :
     bool inquireFree();
     QVector<Pcb*> pcbArray;
 
-    void roundRobin(Ui::MainWindow *ui,Pcb *newPcb);
+    void roundRobin(MainWindow *mainWindow,Pcb *newPcb);
     void priorityDispatch(MainWindow *mainWindow,Pcb *newPcb);
-    void ShortestProcessNext(Ui::MainWindow *ui,Pcb *newPcb);
-    void ShortestRemainingTime(Ui::MainWindow *ui,Pcb *newPcb);
+    void ShortestProcessNext(MainWindow *mainWindow,Pcb *newPcb);
+    void ShortestRemainingTime(MainWindow *mainWindow,Pcb *newPcb);
     void priorityInsert(MainWindow *mainWindow,Pcb *newPcb);
-    void ShortestProcessNextInsert(Ui::MainWindow *ui,Pcb *newPcb);
-    void ShortestRemainingTimeInsert(Ui::MainWindow *ui,Pcb *newPcb);
+    void ShortestProcessNextInsert(MainWindow *mainWindow,Pcb *newPcb);
+    void ShortestRemainingTimeInsert(MainWindow *mainWindow,Pcb *newPcb);
     void createNewPcb(MainWindow *mainWindow);
     void upDateLineup(MainWindow *mainWindow);
 

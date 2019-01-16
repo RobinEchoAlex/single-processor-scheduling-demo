@@ -91,24 +91,25 @@ void Dispatcher::sendToConsole(QString sendText,QString colour,QString target)//
     emit newText(sendText,colour,target);
 }
 
-void Dispatcher::roundRobin(Ui::MainWindow *ui, Pcb *newPcb){
+void Dispatcher::roundRobin(MainWindow *mainWindow,Pcb *newPcb){
     bool finished;
+    Pcb* pcb;
     if(newPcb!=nullptr) pcbArray.append(newPcb);
     qDebug()<<pcbArray.isEmpty()<<" "<<pcbArray.length()<<endl;
     if(pcbArray.isEmpty()){
         return;
     }
-    finished=pcbArray.first()->run(ui,this,2,0);
+    pcb=pcbArray.takeFirst();
+    upDateLineup(mainWindow);
+    finished=pcb->run(mainWindow->ui,this,2,0);
     if(finished==0) {
-        pcbArray.append(pcbArray.takeFirst());
+        pcbArray.append(pcb);
+
     }
     else{
-        pcbArray.removeFirst();
         pcbNumber--;
     }
-    for(int i=1;i<pcbArray.length();i++){
-        pcbArray.move(i,i-1);
-    }
+    upDateLineup(mainWindow);
 }
 
 void Dispatcher::priorityDispatch(MainWindow *mainWindow,Pcb *newPcb){
@@ -134,7 +135,7 @@ void Dispatcher::priorityDispatch(MainWindow *mainWindow,Pcb *newPcb){
     upDateLineup(mainWindow);
 }
 
-void Dispatcher::ShortestProcessNext(Ui::MainWindow *ui, Pcb *newPcb){
+void Dispatcher::ShortestProcessNext(MainWindow *mainWindow, Pcb *newPcb){
     bool finished;
     if(newPcb!=nullptr) pcbArray.append(newPcb);
     if(pcbArray.isEmpty()){
@@ -148,7 +149,7 @@ void Dispatcher::ShortestProcessNext(Ui::MainWindow *ui, Pcb *newPcb){
             shortestPcb=i;
         }
     }
-    finished=pcbArray[shortestPcb]->run(ui,this,0,2);
+    finished=pcbArray[shortestPcb]->run(mainWindow->ui,this,0,2);
     pcbArray.remove(shortestPcb);
     i++;
     pcbNumber--;
@@ -159,7 +160,7 @@ void Dispatcher::ShortestProcessNext(Ui::MainWindow *ui, Pcb *newPcb){
 
 }
 
-void Dispatcher::ShortestRemainingTime(Ui::MainWindow *ui,Pcb *newPcb){
+void Dispatcher::ShortestRemainingTime(MainWindow *mainWindow,Pcb *newPcb){
 
 }
 
@@ -196,7 +197,7 @@ void Dispatcher::createNewPcb(MainWindow *mainWindow){
 void Dispatcher::priorityInsert(MainWindow *mainWindow,Pcb *newPcb){
     if(pcbArray.isEmpty()==1) { pcbArray.append(newPcb); return;}
     else{
-        int i,j;
+        int i;
         qDebugOut();
 
         for(i=0;i<pcbArray.length();i++)
@@ -216,7 +217,7 @@ void Dispatcher::upDateLineup(MainWindow *mainWindow){
     for(int i=0;i<pcbArray.length();i++)
     {
         mainWindow->label[0][i]->setText(QString::number(pcbArray[i]->getName()));
-        mainWindow->label[1][i]->setText(QString::number(pcbArray[i]->getPriority()));
+     mainWindow->label[1][i]->setText(QString::number(pcbArray[i]->getPriority()));
         mainWindow->label[2][i]->setText(QString::number(pcbArray[i]->getTime()));
         mainWindow->label[3][i]->setText(QString::number(pcbArray[i]->getOriginTime()));
         mainWindow->label[4][i]->setText(QString::number((clock-pcbArray[i]->getEnterTime())/(pcbArray[i]->getOriginTime()-pcbArray[i]->getTime())));
