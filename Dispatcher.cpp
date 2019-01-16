@@ -159,9 +159,7 @@ void Dispatcher::ShortestProcessNextInsert(MainWindow *mainWindow, Pcb *newPcb){
             if(newPcb->getTime()>pcbArray[i]->getTime()){
                 pcbArray.insert(i,newPcb);
                 upDateLineup(mainWindow);
-                QEventLoop eventloop;
-                QTimer::singleShot(1000, &eventloop, SLOT(quit()));
-                eventloop.exec();
+                MainWindow::displayPause();
                 return;
             }
         }
@@ -187,9 +185,6 @@ void Dispatcher::createNewPcb(MainWindow *mainWindow){
         if(possibility[this->getPcbNumber()]<probability){
             return;
         }
-        QEventLoop eventloop;
-        QTimer::singleShot(1000, &eventloop, SLOT(quit()));
-        eventloop.exec();
     }
     Pcb *p= new Pcb(this,mainWindow);
     if(mainWindow->policy.checkedId()==0) pcbArray.append(p);
@@ -198,7 +193,7 @@ void Dispatcher::createNewPcb(MainWindow *mainWindow){
     pcbNumber++;
     pcbNo++;
     QString message = "A new PCB #"+QString::number(pcbNo-1)+" is created";
-    sendToConsole(message,"black","console");
+    sendToConsole(message,"red","console");
     message = "priority="+QString::number(p->getPriority())+" time request="+QString::number(p->getTime());
     sendToConsole(message,"black","console");
     return;
@@ -213,9 +208,7 @@ void Dispatcher::priorityInsert(MainWindow *mainWindow,Pcb *newPcb){
             if(newPcb->getPriority()>pcbArray[i]->getPriority()){
                 pcbArray.insert(i,newPcb);
                 upDateLineup(mainWindow);
-                QEventLoop eventloop;
-                QTimer::singleShot(1000, &eventloop, SLOT(quit()));
-                eventloop.exec();
+                MainWindow::displayPause();
                 return;
             }
         }

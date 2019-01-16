@@ -26,7 +26,8 @@ public:
     Dispatcher *dispatcher = new Dispatcher(this);
     Ui::MainWindow *ui;
     QLabel *label[5][6];
-    void pause();
+    static void displayPause();
+    static void displayPause(int pauseSecond);
 
 private slots:
     void on_RRChosen_clicked();

@@ -97,9 +97,7 @@ void Pcb::runDown(MainWindow *mainwindow,Dispatcher *dispatcher,int runningTime,
         percentage = (double)(time+i)/ (double)originTime *100;
         mainwindow->ui->progressBar->setValue(percentage);
         mainwindow->ui->CurrentProcessLeftTimeValue->setText(QString::number(time+i));
-        QEventLoop eventloop;
-        QTimer::singleShot(1000, &eventloop, SLOT(quit()));
-        eventloop.exec();
+        MainWindow::displayPause();
     }
     mainwindow->ui->CurrentProcessNoValue->setText("");
     mainwindow->ui->CurrentProcessLeftTimeValue->setText("");

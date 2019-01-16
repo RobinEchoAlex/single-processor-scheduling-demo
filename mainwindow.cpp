@@ -171,3 +171,15 @@ void MainWindow::on_ResetButton_clicked()
     dispatcher->pcbArray.clear();
     dispatcher->upDateLineup(this);
 }
+
+void MainWindow::displayPause(){
+    QEventLoop eventloop;
+    QTimer::singleShot(1000, &eventloop, SLOT(quit()));
+    eventloop.exec();
+}
+
+void MainWindow::displayPause(int pauseSecond){
+    QEventLoop eventloop;
+    QTimer::singleShot(pauseSecond, &eventloop, SLOT(quit()));
+    eventloop.exec();
+}
