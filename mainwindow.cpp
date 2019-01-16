@@ -9,6 +9,18 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle(tr("Uniprocessor Dispatcher"));
+    QIcon icon(":/icon/image/schedule.png");
+    setWindowIcon(icon);
+    QMenu *settingMenu = menuBar()->addMenu(tr("&Setting"));
+
+    languageAction = new QAction(QIcon(":/icon/image/Language.png"),tr("&Language"),this);
+    languageAction->setShortcut(QKeySequence::Backspace);
+    languageAction->setStatusTip((tr("Choose language")));
+    connect(languageAction,&QAction::triggered,this,&MainWindow::languageSelection);
+    settingMenu->addAction(languageAction);
+
+
+
     policy.addButton(ui->RRChosen,0);
     policy.addButton(ui->PRChosen,1);
     policy.addButton(ui->SPNChosen,2);
@@ -115,9 +127,9 @@ void MainWindow::print(QString &name,QString &colour,QString &target)
     {
        clrR.setRgb(255,0,0);//Colour is set to red
     }
-    else if(colour.compare("black",Qt::CaseInsensitive)==0)
+    else if(colour.compare("white",Qt::CaseInsensitive)==0)
     {
-        clrR.setRgb(0,0,0);//Colour is set to black
+        clrR.setRgb(255,255,255);//Colour is set to white
     }
     stringToHtmlFilter(name);
     stringToHtml(name,clrR);
@@ -160,7 +172,7 @@ void MainWindow::on_PauseButton_clicked()
 {
     dispatcher->setPause(true);
     QString message="Simulation paused";
-    QString colour="black";
+    QString colour="white";
     QString target="console";
     print(message,colour,target);
 }
@@ -182,4 +194,39 @@ void MainWindow::displayPause(int pauseSecond){
     QEventLoop eventloop;
     QTimer::singleShot(pauseSecond, &eventloop, SLOT(quit()));
     eventloop.exec();
+}
+
+void MainWindow::languageSelection()
+{
+
+    QTranslator translator;
+    bool ok;
+    QStringList languages;
+    QString languageSelect;
+    languages<<tr("English")<<tr("简体中文");//update needed if new languages added
+    languageSelect = QInputDialog::getItem(
+                          this,
+                          tr("Choose the language you want to use:"),
+                          tr("Language available : English,简体中文"),
+                          languages,
+                          0,
+                          false,
+                          &ok);
+    if(languageSelect.compare("简体中文")==0)//load successful or not
+    {
+        if (translator.load(":/languages/lans/zh.qm"))
+        {
+            qDebug()<<"ts file loaded successfully"<<endl;
+            qApp->installTranslator(&translator);//what is qApp?
+            ui->retranslateUi(this);
+        }
+    }
+    else if(languageSelect.compare("English")==0)
+    {
+        if (translator.load(":/languages/lans/en.qm"));
+        {
+            qApp->installTranslator(&translator);
+            ui->retranslateUi(this);
+        }
+    }
 }

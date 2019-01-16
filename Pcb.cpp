@@ -14,7 +14,7 @@ Pcb::Pcb(){
 Pcb::Pcb(Dispatcher *dispatcher,MainWindow *mainWindow){
     connect(this,&Pcb::newText,mainWindow,&MainWindow::print);
     if(dispatcher->inquireFree()==0){
-        sendToConsole(tr("Fail to create a new process due to full PCB area"),"black","console");
+        sendToConsole(tr("Fail to create a new process due to full PCB area"),"white","console");
         return;
     }
     name=dispatcher->getPcbNo();
@@ -24,7 +24,7 @@ Pcb::Pcb(Dispatcher *dispatcher,MainWindow *mainWindow){
     time=qrand()%9+1;//time 1-10
     originTime=time;
     enterTime=dispatcher->getClock();
-    qDebug()<<"a new pcb,#"<<this->name<<"has been created"<<endl;
+    //qDebug()<<"a new pcb,#"<<this->name<<"has been created"<<endl;
 }
 
 int Pcb::getName(){
@@ -53,7 +53,6 @@ void Pcb::decreasePriority(){
 
 void Pcb::sendToConsole(QString sendText,QString colour,QString target)//send the word to the text display window
 {
-    //qDebug()<<status<<endl;
     emit newText(sendText,colour,target);
 }
 
@@ -73,8 +72,8 @@ int Pcb::run(MainWindow *mainWindow,Dispatcher *dispatcher,int runningTime,int m
         time=0;
         status=0;
         calculateAverageNormalisedTurnaroundTime(mainWindow->ui,dispatcher);
-        QString message="PCB#"+ QString::number(getName())+" quit";
-        sendToConsole(message,"black","finished");
+        QString message="PCB#"+ QString::number(getName())+tr(" quit at ")+ QString::number(dispatcher->getClock())+"s";
+        sendToConsole(message,"white","finished");
         return 1;//finished
     }
     else if(method==2)//SPN

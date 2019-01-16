@@ -36,6 +36,9 @@ HEADERS += \
     Dispatcher.h \
     Pcb.h
 
+RESOURCES += qdarkstyle/style.qrc \
+    image.qrc
+
 FORMS += \
         mainwindow.ui
 

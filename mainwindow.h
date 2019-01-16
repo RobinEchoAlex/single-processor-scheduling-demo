@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QButtonGroup>
 #include <QCoreApplication>
+#include <QTranslator>
+#include <QInputDialog>
 #include <QTimer>
 #include "Dispatcher.h"
 
@@ -25,9 +27,12 @@ public:
     QButtonGroup policy;
     Dispatcher *dispatcher = new Dispatcher(this);
     Ui::MainWindow *ui;
+    QAction *languageAction;
+
     QLabel *label[5][6];
     static void displayPause();
     static void displayPause(int pauseSecond);
+    void languageSelection();
 
 private slots:
     void on_RRChosen_clicked();

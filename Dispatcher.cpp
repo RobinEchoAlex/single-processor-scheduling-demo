@@ -168,7 +168,18 @@ void Dispatcher::ShortestProcessNextInsert(MainWindow *mainWindow, Pcb *newPcb){
 }
 
 void Dispatcher::ShortestRemainingTime(MainWindow *mainWindow,Pcb *newPcb){
-
+    Pcb *pcb;
+    bool finished=0;
+    if(pcbArray.isEmpty()){
+        return;
+    }
+    pcb= pcbArray.takeFirst();
+    upDateLineup(mainWindow);
+    finished=(pcb->run(mainWindow,this,0,2));
+    if(finished==1) {
+        pcbNumber--;
+    }
+    upDateLineup(mainWindow);
 }
 
 void Dispatcher::createNewPcb(MainWindow *mainWindow){
@@ -195,7 +206,7 @@ void Dispatcher::createNewPcb(MainWindow *mainWindow){
     QString message = "A new PCB #"+QString::number(pcbNo-1)+" is created";
     sendToConsole(message,"red","console");
     message = "priority="+QString::number(p->getPriority())+" time request="+QString::number(p->getTime());
-    sendToConsole(message,"black","console");
+    sendToConsole(message,"white","console");
     return;
 }
 

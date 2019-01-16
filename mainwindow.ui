@@ -49,14 +49,20 @@
      <property name="geometry">
       <rect>
        <x>50</x>
-       <y>30</y>
-       <width>261</width>
-       <height>91</height>
+       <y>26</y>
+       <width>301</width>
+       <height>101</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="1">
        <widget class="QLabel" name="CurrentProcessNoValue">
+        <property name="font">
+         <font>
+          <family>Consolas</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -64,6 +70,12 @@
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="CurrentProcessNo">
+        <property name="font">
+         <font>
+          <family>Consolas</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>NO.:</string>
         </property>
@@ -71,6 +83,12 @@
       </item>
       <item row="1" column="1">
        <widget class="QLabel" name="CurrentProcessPriorityValue">
+        <property name="font">
+         <font>
+          <family>Consolas</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -78,6 +96,12 @@
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="CurrentProcessPriority">
+        <property name="font">
+         <font>
+          <family>Consolas</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Priority:</string>
         </property>
@@ -85,6 +109,12 @@
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="CurrentProcessLeftTime">
+        <property name="font">
+         <font>
+          <family>Consolas</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Time Left:</string>
         </property>
@@ -92,6 +122,12 @@
       </item>
       <item row="2" column="1">
        <widget class="QLabel" name="CurrentProcessLeftTimeValue">
+        <property name="font">
+         <font>
+          <family>Consolas</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -242,10 +278,10 @@
     <widget class="QWidget" name="verticalLayoutWidget_2">
      <property name="geometry">
       <rect>
-       <x>50</x>
+       <x>40</x>
        <y>40</y>
        <width>160</width>
-       <height>105</height>
+       <height>141</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -260,12 +296,18 @@
         <property name="text">
          <string>Name:</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Priority:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -274,12 +316,18 @@
         <property name="text">
          <string>Time Left:</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_7">
         <property name="text">
          <string>Time Required:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -288,6 +336,9 @@
         <property name="text">
          <string>Turnaround Time:</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
        </widget>
       </item>
      </layout>
@@ -295,8 +346,8 @@
     <widget class="QWidget" name="gridLayoutWidget_4">
      <property name="geometry">
       <rect>
-       <x>270</x>
-       <y>30</y>
+       <x>200</x>
+       <y>40</y>
        <width>691</width>
        <height>141</height>
       </rect>
@@ -608,7 +659,7 @@
      <property name="geometry">
       <rect>
        <x>730</x>
-       <y>10</y>
+       <y>20</y>
        <width>201</width>
        <height>16</height>
       </rect>
@@ -621,7 +672,7 @@
      <property name="geometry">
       <rect>
        <x>480</x>
-       <y>10</y>
+       <y>20</y>
        <width>121</width>
        <height>16</height>
       </rect>
@@ -673,9 +724,9 @@
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>21</y>
+       <y>31</y>
        <width>441</width>
-       <height>181</height>
+       <height>171</height>
       </rect>
      </property>
     </widget>
@@ -696,9 +747,9 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>20</y>
+       <y>30</y>
        <width>231</width>
-       <height>181</height>
+       <height>171</height>
       </rect>
      </property>
     </widget>
@@ -713,8 +764,7 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border:2pxsolidgreen;
-background:silver;</string>
+     <string notr="true"/>
     </property>
    </widget>
    <widget class="QLCDNumber" name="NormalizeTurnaroundTime">
@@ -727,8 +777,7 @@ background:silver;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border:2pxsolidgreen;
-background:silver;</string>
+     <string notr="true"/>
     </property>
    </widget>
    <widget class="QLabel" name="lcdProperty2">

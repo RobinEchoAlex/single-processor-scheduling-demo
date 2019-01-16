@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>image/Down.png</file>
+        <file>image/Language.png</file>
+        <file>image/Running.png</file>
+        <file>image/schedule.png</file>
+        <file>image/Substitute.png</file>
+        <file>image/Up.png</file>
+    </qresource>
+</RCC>
