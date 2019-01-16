@@ -23,8 +23,9 @@ public:
     void stringToHtml(QString &str,QColor colour);
     //void runDown(Pcb* pcb,int runningTime);
     QButtonGroup policy;
-    Dispatcher dispatcher;
+    Dispatcher *dispatcher = new Dispatcher(this);
     Ui::MainWindow *ui;
+    QLabel *label[5][6];
 
 private slots:
     void on_RRChosen_clicked();
@@ -38,6 +39,8 @@ private slots:
     void on_StartButton_clicked();
 
     void on_PauseButton_clicked();
+
+    void on_ResetButton_clicked();
 
 private:
 

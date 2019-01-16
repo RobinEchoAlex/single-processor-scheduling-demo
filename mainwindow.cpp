@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "Pcb.h"
-#include "Dispatcher.h"
+#include "dispatcher.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -9,20 +9,48 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle(tr("Uniprocessor Dispatcher"));
-
-    Dispatcher dispathcer;
     policy.addButton(ui->RRChosen,0);
     policy.addButton(ui->PRChosen,1);
     policy.addButton(ui->SPNChosen,2);
     policy.addButton(ui->SRTChosen,3);
     ui->RRChosen->setChecked(true);
-    on_RRChosen_clicked();
+    label[0][0]= ui->Name1;
+    label[0][1]= ui->Name1_2;
+    label[0][2]= ui->Name1_3;
+    label[0][3]= ui->Name1_4;
+    label[0][4]= ui->Name1_5;
+    label[0][5]= ui->Name1_6;
+    label[1][0]= ui->Priority1;
+    label[1][1]= ui->Priority1_2;
+    label[1][2]= ui->Priority1_3;
+    label[1][3]= ui->Priority1_4;
+    label[1][4]= ui->Priority1_5;
+    label[1][5]= ui->Priority1_6;
+    label[2][0]= ui->TimeLeft1;
+    label[2][1]= ui->TimeLeft1_2;
+    label[2][2]= ui->TimeLeft1_3;
+    label[2][3]= ui->TimeLeft1_4;
+    label[2][4]= ui->TimeLeft1_5;
+    label[2][5]= ui->TimeLeft1_6;
+    label[3][0]= ui->TimeRequired1;
+    label[3][1]= ui->TimeRequired1_2;
+    label[3][2]= ui->TimeRequired1_3;
+    label[3][3]= ui->TimeRequired1_4;
+    label[3][4]= ui->TimeRequired1_5;
+    label[3][5]= ui->TimeRequired1_6;
+    label[4][0]= ui->TurnAround1;
+    label[4][1]= ui->TurnAround1_2;
+    label[4][2]= ui->TurnAround1_3;
+    label[4][3]= ui->TurnAround1_4;
+    label[4][4]= ui->TurnAround1_5;
+    label[4][5]= ui->TurnAround1_6;
 
+    on_RRChosen_clicked();
 }
 
 MainWindow::~MainWindow()
 {
-    dispatcher.setStop(1);
+    dispatcher->setStop(1);
     delete ui;
 }
 
@@ -48,34 +76,34 @@ void MainWindow::on_SRTChosen_clicked()
 
 void MainWindow::on_StartButton_clicked()
 {
-    dispatcher.setStop(false);
-    dispatcher.setPause(false);
+    dispatcher->setStop(false);
+    dispatcher->setPause(false);
     QString message=tr("Simulation starts");
     QString colour="red";
     QString target="console";
     print(message,colour,target);
-    while(dispatcher.inquireStop()==false && dispatcher.inquirePause()==false){
+    while(dispatcher->inquireStop()==false && dispatcher->inquirePause()==false){
         if(policy.checkedId()==0){
-            dispatcher.roundRobin(ui,nullptr);
-            dispatcher.upDateLineup(ui);
-            dispatcher.createNewPcb(this);
-            dispatcher.upDateLineup(ui);
+            dispatcher->roundRobin(ui,nullptr);
+            dispatcher->upDateLineup(this);
+            dispatcher->createNewPcb(this);
+            dispatcher->upDateLineup(this);
         }
         if(policy.checkedId()==1){
-            dispatcher.priority(ui,nullptr);
-            dispatcher.upDateLineup(ui);
-            dispatcher.createNewPcb(this);
-            dispatcher.upDateLineup(ui);
+            dispatcher->priorityDispatch(this,nullptr);
+            dispatcher->upDateLineup(this);
+            dispatcher->createNewPcb(this);
+            dispatcher->upDateLineup(this);
         }
         if(policy.checkedId()==2){
-            dispatcher.ShortestProcessNext(ui,nullptr);
-            dispatcher.upDateLineup(ui);
-            dispatcher.createNewPcb(this);
-            dispatcher.upDateLineup(ui);
+            dispatcher->ShortestProcessNext(ui,nullptr);
+            dispatcher->upDateLineup(this);
+            dispatcher->createNewPcb(this);
+            dispatcher->upDateLineup(this);
         }
         if(policy.checkedId()==3){
-            dispatcher.ShortestRemainingTime(ui,nullptr);
-            dispatcher.upDateLineup(ui);
+            dispatcher->ShortestRemainingTime(ui,nullptr);
+            dispatcher->upDateLineup(this);
         }
     }
 
@@ -129,25 +157,18 @@ void MainWindow::stringToHtml(QString &str,QColor colour)
     str = QString("<spanT style=\" color:#%1;\">%2</span>").arg(strC).arg(str);
 }
 
-/*
-void MainWindow::runDown(Pcb* pcb,int runningTime){
-    double percentage;
-    ui->CurrentProcessNo->setText(QString::number(pcb->getName()));
-    ui->CurrentProcessPriority->setText(QString::number(pcb->getPriority()));
-    for(int i=0;i<runningTime;i++){
-        QEventLoop eventloop;
-        QTimer::singleShot(1000, &eventloop, SLOT(quit()));
-        eventloop.exec();
-        percentage = (runningTime-i)/ pcb->getTime();
-    }
-}
-*/
-
 void MainWindow::on_PauseButton_clicked()
 {
-    dispatcher.setPause(true);
+    dispatcher->setPause(true);
     QString message="Simulation paused";
     QString colour="black";
     QString target="console";
     print(message,colour,target);
+}
+
+void MainWindow::on_ResetButton_clicked()
+{
+    dispatcher->setStop(1);
+    dispatcher->pcbArray.clear();
+    dispatcher->upDateLineup(this);
 }

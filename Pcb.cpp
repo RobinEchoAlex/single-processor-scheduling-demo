@@ -9,7 +9,6 @@ Pcb::Pcb(){
     this->time=0;
     this->originTime=0;
     this->enterTime=0;
-
 }
 
 Pcb::Pcb(Dispatcher *dispatcher,MainWindow *mainWindow){
@@ -87,6 +86,7 @@ void Pcb::runDown(Ui::MainWindow *ui,Dispatcher *dispatcher,int runningTime){
         dispatcher->clockTick(ui);
         percentage = (double)(time+i)/ (double)originTime *100;
         ui->progressBar->setValue(percentage);
+        ui->CurrentProcessLeftTimeValue->setText(QString::number(time+i));
         QEventLoop eventloop;
         QTimer::singleShot(1000, &eventloop, SLOT(quit()));
         eventloop.exec();
