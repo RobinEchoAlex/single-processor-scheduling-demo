@@ -37,12 +37,22 @@ HEADERS += \
     Pcb.h
 
 RESOURCES += qdarkstyle/style.qrc \
-    image.qrc
+    image.qrc \
+    language.qrc
 
 FORMS += \
         mainwindow.ui
+
+TRANSLATIONS +=language/tr_zh.ts \
+               language/tr_en.ts
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    language/tr_en.qm \
+    language/tr_zh.qm \
+    language/tr_en.qm \
+    language/tr_zh.qm

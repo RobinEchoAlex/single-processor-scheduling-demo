@@ -5,6 +5,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
     QFile f(":qdarkstyle/style.qss");
     if (!f.exists())
     {
@@ -16,6 +17,23 @@ int main(int argc, char *argv[])
         QTextStream ts(&f);
         qApp->setStyleSheet(ts.readAll());
     }
+
+    QTranslator translator;
+    translator.load(":/language/tr_zh.qm");
+    a.installTranslator(&translator);
+    QLocale locale;
+    if( locale.language() == QLocale::English )  //Automatically choose the language, in accordance with system enviornment
+        {
+            translator.load(QString("://language/tr_en.qm"));
+            a.installTranslator(&translator);
+        }
+    else if( locale.language() == QLocale::Chinese )
+        {
+            qDebug() << "中文系统";
+            translator.load(QString("://language/tr_zh.qm"));
+            a.installTranslator(&translator);
+        }
+
     MainWindow w;
     w.show();
 
