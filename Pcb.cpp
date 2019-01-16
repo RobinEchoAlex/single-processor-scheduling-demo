@@ -57,40 +57,53 @@ void Pcb::sendToConsole(QString sendText,QString colour,QString target)//send th
     emit newText(sendText,colour,target);
 }
 
-int Pcb::run(Ui::MainWindow *ui,Dispatcher *dispatcher,int runningTime,int method){
+int Pcb::run(MainWindow *mainWindow,Dispatcher *dispatcher,int runningTime,int method){
     status=1;
-    ui->CurrentProcessNoValue->setText(QString::number(getName()));
-    ui->CurrentProcessPriorityValue->setText(QString::number(getPriority()));
-    ui->CurrentProcessLeftTimeValue->setText(QString::number(getTime()));
-    if(time>runningTime){
+    mainWindow->ui->CurrentProcessNoValue->setText(QString::number(getName()));
+     mainWindow->ui->CurrentProcessPriorityValue->setText(QString::number(getPriority()));
+     mainWindow->ui->CurrentProcessLeftTimeValue->setText(QString::number(getTime()));
+    if(method!=2 && time>runningTime){
         time=time-runningTime;
-        runDown(ui,dispatcher,runningTime);
+        runDown( mainWindow,dispatcher,runningTime,method);
         status=0;
         return 0;
     }
-    else if (time<=runningTime){
-        runDown(ui,dispatcher,time);
+    else if (method!=2 && time<=runningTime){
+        runDown( mainWindow,dispatcher,time,method);
         time=0;
         status=0;
-        calculateAverageNormalisedTurnaroundTime(ui,dispatcher);
+        calculateAverageNormalisedTurnaroundTime(mainWindow->ui,dispatcher);
         QString message="PCB#"+ QString::number(getName())+" quit";
         sendToConsole(message,"black","finished");
         return 1;//finished
     }
+    else if(method==2)//SPN
+    {
+        runDown( mainWindow,dispatcher,time,method);
+        time=0;
+        return 1;
+    }
     return -1;
 }
 
-void Pcb::runDown(Ui::MainWindow *ui,Dispatcher *dispatcher,int runningTime){
+void Pcb::runDown(MainWindow *mainwindow,Dispatcher *dispatcher,int runningTime,int method){
     double percentage=0;
     for(int i=runningTime;i>=0;i--){
-        dispatcher->clockTick(ui);
+        if(method== 2) {
+            dispatcher->createNewPcb(mainwindow);
+            time=0;
+        }
+        dispatcher->clockTick(mainwindow->ui);
         percentage = (double)(time+i)/ (double)originTime *100;
-        ui->progressBar->setValue(percentage);
-        ui->CurrentProcessLeftTimeValue->setText(QString::number(time+i));
+        mainwindow->ui->progressBar->setValue(percentage);
+        mainwindow->ui->CurrentProcessLeftTimeValue->setText(QString::number(time+i));
         QEventLoop eventloop;
         QTimer::singleShot(1000, &eventloop, SLOT(quit()));
         eventloop.exec();
     }
+    mainwindow->ui->CurrentProcessNoValue->setText("");
+    mainwindow->ui->CurrentProcessLeftTimeValue->setText("");
+    mainwindow->ui->CurrentProcessPriorityValue->setText("");
 }
 
 int Pcb::calculateAverageNormalisedTurnaroundTime(Ui::MainWindow *ui,Dispatcher *dispatcher){

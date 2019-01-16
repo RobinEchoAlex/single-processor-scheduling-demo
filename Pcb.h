@@ -19,8 +19,8 @@ public :
     void sendToConsole(QString sendText,QString colour,QString target);
     Pcb();
     Pcb(Dispatcher *dispatcher,MainWindow *mainWindow);
-    int run(Ui::MainWindow *ui,Dispatcher *dispatcher,int runningTime,int method);
-    void runDown(Ui::MainWindow *ui,Dispatcher *dispatcher,int runningTime);
+    int run(MainWindow *mainWindow,Dispatcher *dispatcher,int runningTime,int method);
+    void runDown(MainWindow *mainWindow,Dispatcher *dispatcher,int runningTime,int method);
     int getName();
     int getPriority();
     int getTime();

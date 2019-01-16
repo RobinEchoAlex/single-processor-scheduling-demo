@@ -96,9 +96,8 @@ void MainWindow::on_StartButton_clicked()
             dispatcher->upDateLineup(this);
         }
         if(policy.checkedId()==2){
+            if(dispatcher->pcbArray.isEmpty()==1) dispatcher->createNewPcb(this);
             dispatcher->ShortestProcessNext(this,nullptr);
-            dispatcher->upDateLineup(this);
-            dispatcher->createNewPcb(this);
             dispatcher->upDateLineup(this);
         }
         if(policy.checkedId()==3){

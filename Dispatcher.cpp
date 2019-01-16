@@ -2,6 +2,9 @@
 #include "mainwindow.h"
 
 void Dispatcher::qDebugOut(){
+    /**
+     * @brief Test whether the lineup is correct or not
+     */
     int i=0;
     for(i=0;i!=pcbArray.length();i++){
         qDebug()<<"the "<<i<<" pcb's name=" << QString::number(pcbArray[i]->getName())<<" time="<<QString::number(pcbArray[i]->getTime())<<endl;
@@ -101,7 +104,7 @@ void Dispatcher::roundRobin(MainWindow *mainWindow,Pcb *newPcb){
     }
     pcb=pcbArray.takeFirst();
     upDateLineup(mainWindow);
-    finished=pcb->run(mainWindow->ui,this,2,0);
+    finished=pcb->run(mainWindow,this,2,0);
     if(finished==0) {
         pcbArray.append(pcb);
 
@@ -113,51 +116,57 @@ void Dispatcher::roundRobin(MainWindow *mainWindow,Pcb *newPcb){
 }
 
 void Dispatcher::priorityDispatch(MainWindow *mainWindow,Pcb *newPcb){
+    Pcb *pcb;
     bool finished=0;
     if(pcbArray.isEmpty()){
         return;
     }
     pcbArray.first()->decreasePriority();
-    finished=(pcbArray.first()->run(mainWindow->ui,this,2,1));
+    pcb= pcbArray.takeFirst();
+    upDateLineup(mainWindow);
+    finished=(pcb->run(mainWindow,this,2,1));
     if(finished==1) {
-        qDebugOut();
-        QString message = "PCB no"+QString::number(pcbArray.first()->getName())+"Finished";
-        pcbArray.removeFirst();
-        qDebugOut();
-        sendToConsole(message,"black","console");
         pcbNumber--;
     }
     else {
-        qDebugOut();
-        Pcb *p= pcbArray.takeFirst();
-        pcbArray.append(p);
+        pcbArray.append(pcb);
     }
     upDateLineup(mainWindow);
 }
 
 void Dispatcher::ShortestProcessNext(MainWindow *mainWindow, Pcb *newPcb){
-    bool finished;
-    if(newPcb!=nullptr) pcbArray.append(newPcb);
+    qDebugOut();
+    Pcb *pcb;
+    bool finished=0;
     if(pcbArray.isEmpty()){
         return;
     }
-    int i;
-    int shortestPcb=0;
-    for (i=0;i<pcbArray.length();i++)
-    {
-        if (pcbArray[i]->getTime() < pcbArray[shortestPcb]->getTime()){
-            shortestPcb=i;
+    pcb= pcbArray.takeFirst();
+    upDateLineup(mainWindow);
+    finished=(pcb->run(mainWindow,this,0,2));
+    if(finished==1) {
+        pcbNumber--;
+    }
+    upDateLineup(mainWindow);
+}
+
+void Dispatcher::ShortestProcessNextInsert(MainWindow *mainWindow, Pcb *newPcb){
+    if(pcbArray.isEmpty()==1) { pcbArray.append(newPcb); return;}
+    else{
+        int i;
+        for(i=0;i<pcbArray.length();i++)
+        {
+            if(newPcb->getTime()>pcbArray[i]->getTime()){
+                pcbArray.insert(i,newPcb);
+                upDateLineup(mainWindow);
+                QEventLoop eventloop;
+                QTimer::singleShot(1000, &eventloop, SLOT(quit()));
+                eventloop.exec();
+                return;
+            }
         }
     }
-    finished=pcbArray[shortestPcb]->run(mainWindow->ui,this,0,2);
-    pcbArray.remove(shortestPcb);
-    i++;
-    pcbNumber--;
-    for (;i<pcbArray.length();i++)
-    {
-         pcbArray.move(i,i-1);
-    }
-
+    pcbArray.append(newPcb);
 }
 
 void Dispatcher::ShortestRemainingTime(MainWindow *mainWindow,Pcb *newPcb){
@@ -175,16 +184,17 @@ void Dispatcher::createNewPcb(MainWindow *mainWindow){
         t= QTime::currentTime();
         qsrand(t.msec()+t.second()*1000);
         int probability=qrand()%100;
-        QEventLoop eventloop;
-        QTimer::singleShot(1000, &eventloop, SLOT(quit()));
-        eventloop.exec();
         if(possibility[this->getPcbNumber()]<probability){
             return;
         }
+        QEventLoop eventloop;
+        QTimer::singleShot(1000, &eventloop, SLOT(quit()));
+        eventloop.exec();
     }
     Pcb *p= new Pcb(this,mainWindow);
     if(mainWindow->policy.checkedId()==0) pcbArray.append(p);
     else if(mainWindow->policy.checkedId()==1) priorityInsert(mainWindow,p);
+    else if(mainWindow->policy.checkedId()==2) ShortestProcessNextInsert(mainWindow,p);
     pcbNumber++;
     pcbNo++;
     QString message = "A new PCB #"+QString::number(pcbNo-1)+" is created";
@@ -198,14 +208,14 @@ void Dispatcher::priorityInsert(MainWindow *mainWindow,Pcb *newPcb){
     if(pcbArray.isEmpty()==1) { pcbArray.append(newPcb); return;}
     else{
         int i;
-        qDebugOut();
-
         for(i=0;i<pcbArray.length();i++)
         {
             if(newPcb->getPriority()>pcbArray[i]->getPriority()){
                 pcbArray.insert(i,newPcb);
-                qDebugOut();
                 upDateLineup(mainWindow);
+                QEventLoop eventloop;
+                QTimer::singleShot(1000, &eventloop, SLOT(quit()));
+                eventloop.exec();
                 return;
             }
         }
