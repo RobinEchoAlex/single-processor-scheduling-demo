@@ -102,18 +102,21 @@ void MainWindow::on_StartButton_clicked()
             dispatcher->upDateLineup(this);
         }
         if(policy.checkedId()==1){
-            dispatcher->priorityDispatch(this,nullptr);
+            dispatcher->priorityDispatch(this);
             dispatcher->upDateLineup(this);
             dispatcher->createNewPcb(this);
             dispatcher->upDateLineup(this);
         }
         if(policy.checkedId()==2){
             if(dispatcher->pcbArray.isEmpty()==1) dispatcher->createNewPcb(this);
-            dispatcher->ShortestProcessNext(this,nullptr);
+            dispatcher->ShortestProcessNext(this);
             dispatcher->upDateLineup(this);
         }
         if(policy.checkedId()==3){
-            dispatcher->ShortestRemainingTime(this,nullptr);
+            if(dispatcher->pcbArray.isEmpty()==1) {
+                dispatcher->createNewPcb(this);
+            }
+            dispatcher->ShortestRemainingTime(this);
             dispatcher->upDateLineup(this);
         }
     }

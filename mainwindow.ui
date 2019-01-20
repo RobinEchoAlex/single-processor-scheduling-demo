@@ -685,26 +685,26 @@
      <property name="geometry">
       <rect>
        <x>630</x>
-       <y>10</y>
+       <y>20</y>
        <width>72</width>
        <height>15</height>
       </rect>
      </property>
      <property name="text">
-      <string> </string>
+      <string/>
      </property>
     </widget>
     <widget class="QLabel" name="NumberOfPCBRunning">
      <property name="geometry">
       <rect>
        <x>940</x>
-       <y>10</y>
+       <y>20</y>
        <width>72</width>
        <height>15</height>
       </rect>
      </property>
      <property name="text">
-      <string> </string>
+      <string/>
      </property>
     </widget>
    </widget>

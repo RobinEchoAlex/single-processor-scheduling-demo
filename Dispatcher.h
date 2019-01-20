@@ -36,13 +36,13 @@ public :
     QVector<Pcb*> pcbArray;
 
     void roundRobin(MainWindow *mainWindow,Pcb *newPcb);
-    void priorityDispatch(MainWindow *mainWindow,Pcb *newPcb);
-    void ShortestProcessNext(MainWindow *mainWindow,Pcb *newPcb);
-    void ShortestRemainingTime(MainWindow *mainWindow,Pcb *newPcb);
+    void priorityDispatch(MainWindow *mainWindow);
+    void ShortestProcessNext(MainWindow *mainWindow);
+    int ShortestRemainingTime(MainWindow *mainWindow);
     void priorityInsert(MainWindow *mainWindow,Pcb *newPcb);
     void ShortestProcessNextInsert(MainWindow *mainWindow,Pcb *newPcb);
-    void ShortestRemainingTimeInsert(MainWindow *mainWindow,Pcb *newPcb);
-    void createNewPcb(MainWindow *mainWindow);
+    Pcb* ShortestRemainingTimeInsert(MainWindow *mainWindow, Pcb *newPcb,Pcb *currentPcb);
+    int createNewPcb(MainWindow *mainWindow);
     void upDateLineup(MainWindow *mainWindow);
 
 public slots:

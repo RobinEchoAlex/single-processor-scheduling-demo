@@ -61,14 +61,14 @@ int Pcb::run(MainWindow *mainWindow,Dispatcher *dispatcher,int runningTime,int m
     mainWindow->ui->CurrentProcessNoValue->setText(QString::number(getName()));
      mainWindow->ui->CurrentProcessPriorityValue->setText(QString::number(getPriority()));
      mainWindow->ui->CurrentProcessLeftTimeValue->setText(QString::number(getTime()));
-    if(method!=2 && time>runningTime){
+    if(method<2 && time>runningTime){
         time=time-runningTime;
         runDown( mainWindow,dispatcher,runningTime,method);
         status=0;
         return 0;
     }
-    else if (method!=2 && time<=runningTime){
-        runDown( mainWindow,dispatcher,time,method);
+    else if (method<2 && time<=runningTime){
+        runDown( mainWindow,dispatcher,time,4);
         time=0;
         status=0;
         calculateAverageNormalisedTurnaroundTime(mainWindow->ui,dispatcher);
@@ -82,6 +82,10 @@ int Pcb::run(MainWindow *mainWindow,Dispatcher *dispatcher,int runningTime,int m
         time=0;
         return 1;
     }
+    else if(method==3)//SRT
+    {
+        runDown( mainWindow,dispatcher,time,method);
+    }
     return -1;
 }
 
@@ -92,7 +96,12 @@ void Pcb::runDown(MainWindow *mainwindow,Dispatcher *dispatcher,int runningTime,
             dispatcher->createNewPcb(mainwindow);
             time=0;
         }
+        if(method==3){
+            time=0;
+            dispatcher->createNewPcb(mainwindow);
+        }
         dispatcher->clockTick(mainwindow->ui);
+        if(method==4) time=0;
         percentage = (double)(time+i)/ (double)originTime *100;
         mainwindow->ui->progressBar->setValue(percentage);
         mainwindow->ui->CurrentProcessLeftTimeValue->setText(QString::number(time+i));
